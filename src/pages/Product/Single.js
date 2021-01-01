@@ -32,6 +32,20 @@ const Single = () => {
         getSingleProducts()
     }, [productId]) //create depedenci productid
 
+    const handleDelete = async (id) => {
+        if (window.confirm('yakin mau dihapus?')) {
+            try {
+                const response = await Axios.delete('http://localhost:3000/product/' + id)
+                const { message } = response.data
+                alert(message)
+                history.push('/product')
+            } catch (error) {
+                alert('network error')
+            }
+        }
+    }
+
+
     return <>
         <h2>Halaman single product</h2>
         {product && <>
@@ -39,6 +53,7 @@ const Single = () => {
             <div>Price : {product.price}</div>
             <div>Stock : {product.stock}</div>
             <div>Status : {product.status ? 'on' : 'off'}</div>
+            <button onClick={() => handleDelete(product._id)}> delete </button>
         </>}
         <button onClick={() => history.push('/product')}> &laquo; back</button>
     </>
